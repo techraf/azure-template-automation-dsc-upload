@@ -41,8 +41,7 @@
       "location": "[parameters('accountLocation')]",
       "tags": {},
       "dependsOn": [
-        "[concat('Microsoft.Automation/automationAccounts/', parameters('accountName'))]",
-        "automationModuleXTimeZone"
+        "[concat('Microsoft.Automation/automationAccounts/', parameters('accountName'))]"
       ],
       "properties": {
         "logVerbose": "false",
