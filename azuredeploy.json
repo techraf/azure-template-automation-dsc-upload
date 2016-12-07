@@ -1,0 +1,66 @@
+{
+  "$schema": "http://schema.management.azure.com/schemas/2015-01-01/deploymentTemplate.json#",
+  "contentVersion": "1.0",
+  "parameters": {
+    "accountName": {
+      "type": "string"
+    },
+    "accountLocation": {
+      "type": "string"
+    },
+    "configurationName": {
+      "type": "string",
+      "defaultValue": "myTimezone",
+      "metadata": {
+        "description": "The name of the DSC Configuration. The name must match the name in the URI."
+      }
+    },
+    "configurationURI": {
+      "type": "string",
+      "defaultValue": "https://raw.githubusercontent.com/azureautomation/automation-packs/master/201-Import-dsc-resources-and-configuration/Configurations/myTimezone.ps1",
+      "metadata": {
+        "description": "The URI for the DSC configuration "
+      }
+    },
+    "configurationDescription": {
+      "type": "string",
+      "defaultValue": "Set the timezone using DSC. for a full list of supported values execute [System.TimeZoneInfo]::GetSystemTimeZones().Id in PowerShell",
+      "metadata": {
+        "description": "The description of the configuration"
+      }
+    },
+    "jobId": {
+      "type": "string",
+      "metadata": {
+        "description": "the job id to compile the configuration"
+      }
+    }
+  },
+  "variables": {
+    "dscOverwrite": "true"
+  },
+  "resources": [
+    {
+      "name": "[parameters('configurationName')]",
+      "type": "Microsoft.Automation/automationAccounts/Configurations",
+      "apiVersion": "2015-01-01-preview",
+      "location": "[parameters('accountLocation')]",
+      "tags": {},
+      "dependsOn": [
+        "[concat('Microsoft.Automation/automationAccounts/', parameters('accountName'))]",
+        "automationModuleXTimeZone"
+      ],
+      "properties": {
+        "logVerbose": "false",
+        "description": "[parameters('configurationDescription')]",                    
+        "state": "Published",
+        "overwrite": "[variables('dscOverwrite')]",
+        "Source": {
+          "type": "uri",
+          "Value": "[parameters('configurationURI')]"
+        }
+      }
+    }
+  ],
+  "outputs": {}
+}
