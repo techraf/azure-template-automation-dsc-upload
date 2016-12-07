@@ -28,12 +28,6 @@
       "metadata": {
         "description": "The description of the configuration"
       }
-    },
-    "jobId": {
-      "type": "string",
-      "metadata": {
-        "description": "the job id to compile the configuration"
-      }
     }
   },
   "variables": {
